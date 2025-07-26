@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-dotenv
+websockets
+livekit
+google-generativeai
+
+fastapi
+uvicorn

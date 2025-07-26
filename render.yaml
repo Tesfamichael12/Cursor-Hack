@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: ai-therapist-backend
+    env: python
+    plan: free
+    repo: https://github.com/your-username/your-repo-name # <-- IMPORTANT: Change this to your repository URL
+    branch: main
+    buildFilter:
+      paths:
+        - backend/**
+    buildCommand: "pip install -r backend/requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: LIVEKIT_API_KEY
+        sync: false
+      - key: LIVEKIT_API_SECRET
+        sync: false
+      - key: LIVEKIT_URL
+        sync: false
