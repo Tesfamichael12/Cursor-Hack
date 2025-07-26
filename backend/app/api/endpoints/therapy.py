@@ -1,30 +1,18 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPException
-from livekit import api
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request
 import asyncio
 import json
 from app.services.sentiment import get_mock_sentiment_score
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 router = APIRouter()
 
-LIVEKIT_API_KEY = os.getenv("LIVEKIT_API_KEY")
-LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET")
-
-auth_handler = api.WebhookReceiver(LIVEKIT_API_KEY, LIVEKIT_API_SECRET)
-
+# Simplified webhook receiver – logs incoming payload without signature verification
 @router.post("/webhook")
 async def webhook_receiver(request: Request):
-    body = await request.body()
-    event = auth_handler.receive(body.decode("utf-8"), request.headers.get("Authorization"))
-
-    if event.event == "participant_joined":
-        print(f"Participant {event.participant.identity} joined room {event.room.name}")
-    elif event.event == "participant_left":
-        print(f"Participant {event.participant.identity} left room {event.room.name}")
-
+    try:
+        payload = await request.json()
+    except Exception:
+        payload = (await request.body()).decode("utf-8")
+    print("Received LiveKit webhook:", payload)
     return {"status": "ok"}
 
 

@@ -74,7 +74,8 @@ export default function TherapyRoom() {
                 setNewMessage(e.target.value)
               }
               onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
-                e.key === "Enter" && (sendMessage(newMessage), setNewMessage(""))
+                e.key === "Enter" &&
+                (sendMessage(newMessage), setNewMessage(""))
               }
             />
             <Button
